@@ -4,8 +4,8 @@
 # Maintainer: James Kittsmiller (AJSlye) <james@nulogicsystems.com>
 
 pkgname=nemo-qml-plugin-contacts
-pkgver=0.3.26
-pkgrel=3
+pkgver=0.3.27
+pkgrel=1
 pkgdesc="Nemo QML contacts plugin"
 arch=('x86_64' 'aarch64')
 url="https://github.com/sailfishos/nemo-qml-plugin-contacts"
@@ -15,17 +15,25 @@ depends=('libphonenumber-nemo'
 	'mce'
 	'mce-headers'
 	'qtcontacts-sqlite'
+	'libaccounts-qt6'
 	'buteo-sync-plugin-carddav'
 	'icu=73.2')
 
-makedepends=('qt5-tools')
+makedepends=(
+    'qt6-tools'
+    'clang'
+)
 source=("${url}/archive/refs/tags/$pkgver.tar.gz")
-sha256sums=('b9f1d35f834e4860ee7eeae9b70a5d5fae78f21c5eb58b686972913f7836aedc')
+sha256sums=('47e95f0b879992b5d75dd5a18dc0d694c8a4e8cd97c5b43a0cc25c972bc07e1c')
+
+prepare() {
+    cd "$srcdir/${pkgname}-${pkgver}"
+}
 
 build() {
   cd $pkgname-$pkgver
   # Not possible to install in build subdir
-  qmake-qt5 VERSION=$pkgver
+  qmake6 VERSION=$pkgver
   make
 }
 
